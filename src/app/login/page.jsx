@@ -1,17 +1,40 @@
 "use client";
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import ErrorMessage from "@/components/errorMessage"
+import axios from "axios";
 const Login = () => {
+  const [formData, setFormData] = useState({});
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
-    alert("Login submitted!");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
+
+  const onSubmit = (data) => {
+    console.log("Form Data:", formData);
+  };
+  const callApi = async () => {
+    try {
+      const res = await axios.get("api/server");
+      console.log(server)
+    }
+    catch (err) {
+      console.log(err.message)
+    }
+  }
+  useEffect(() => {
+    callApi();
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
@@ -25,11 +48,10 @@ const Login = () => {
               </div>
               <div className="divide-y divide-gray-200">
                 <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-
-                  {/* Email Input */}
                   <div className="relative">
                     <input
-                      {...register("email", { required: "Email is required" })}
+                      {...register("email", { required: true })}
+                      onChange={handleChange}
                       autoComplete="off"
                       id="email"
                       type="text"
@@ -44,11 +66,11 @@ const Login = () => {
                     </label>
                     <ErrorMessage error={errors.email} />
                   </div>
-
-                  {/* Password Input */}
                   <div className="relative">
                     <input
-                      {...register("password", { required: "Password is required" })}
+                      {...register("password", { required: true })}
+                      onChange={handleChange}
+
                       autoComplete="off"
                       id="password"
                       type="password"
@@ -63,8 +85,6 @@ const Login = () => {
                     </label>
                     <ErrorMessage error={errors.password} />
                   </div>
-
-                  {/* Submit Button */}
                   <div className="relative">
                     <button
                       type="submit"
