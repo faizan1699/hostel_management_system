@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// User schema
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -24,7 +23,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Check if model already exists (Next.js hot reload issue)
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;
